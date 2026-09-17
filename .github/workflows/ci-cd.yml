@@ -29,10 +29,10 @@ jobs:
 
       - name: SonarQube Analysis
         run: |
-          ./mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+          ./mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:5.8.0.7211:sonar \
             -Dsonar.projectKey=spring-petclinic \
             -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
-            -Dsonar.token=${{ secrets.SONAR_TOKEN }} \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
             -Dsonar.qualitygate.wait=true
 
       - name: Trivy Filesystem Scan
