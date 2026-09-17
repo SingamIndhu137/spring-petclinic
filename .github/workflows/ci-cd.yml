@@ -43,6 +43,12 @@ jobs:
           severity: HIGH,CRITICAL
           ignore-unfixed: true
 
+      - name: Test Nexus Authentication
+        run: |
+          curl -s -o /dev/null -w "%{http_code}\n" \
+            -u "${{ secrets.NEXUS_USERNAME }}:${{ secrets.NEXUS_PASSWORD }}" \
+            "${{ secrets.NEXUS_URL }}/repository/petclinic-snapshots/"
+
       - name: Upload JAR to Nexus
         run: |
           ./mvnw deploy:deploy-file \
