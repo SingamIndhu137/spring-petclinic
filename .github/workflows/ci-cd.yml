@@ -76,7 +76,8 @@ jobs:
             "-Dversion=4.0.0-SNAPSHOT" \
             "-Dpackaging=jar" \
             "-DrepositoryId=nexus" \
-            "-Durl=${{ secrets.NEXUS_URL }}/repository/petclinic-snapshots/"
+            "-Durl=${{ secrets.NEXUS_URL }}"
+
       - name: Build Docker image
         run: |
           docker build \
