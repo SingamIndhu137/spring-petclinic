@@ -30,7 +30,7 @@ jobs:
       - name: SonarQube Analysis
         run: |
           ./mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:5.8.0.7211:sonar \
-            -Dsonar.projectKey=spring-petclinic \
+            -Dsonar.projectKey=Spring-PetClinic \
             -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
             -Dsonar.qualitygate.wait=true
