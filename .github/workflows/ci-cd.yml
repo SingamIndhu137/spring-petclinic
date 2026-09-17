@@ -49,7 +49,25 @@ jobs:
             -u "${{ secrets.NEXUS_USERNAME }}:${{ secrets.NEXUS_PASSWORD }}" \
             "${{ secrets.NEXUS_URL }}/repository/petclinic-snapshots/"
 
+      - name: Configure Maven for Nexus
+        run: |
+          mkdir -p ~/.m2
+          cat > ~/.m2/settings.xml <<'EOF'
+          <settings>
+            <servers>
+              <server>
+                <id>nexus</id>
+                <username>${env.NEXUS_USERNAME}</username>
+                <password>${env.NEXUS_PASSWORD}</password>
+              </server>
+            </servers>
+          </settings>
+          EOF
+
       - name: Upload JAR to Nexus
+        env:
+          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
         run: |
           ./mvnw deploy:deploy-file \
             "-Dfile=target/spring-petclinic-4.0.0-SNAPSHOT.jar" \
@@ -58,10 +76,7 @@ jobs:
             "-Dversion=4.0.0-SNAPSHOT" \
             "-Dpackaging=jar" \
             "-DrepositoryId=nexus" \
-            "-Durl=${{ secrets.NEXUS_URL }}" \
-            "-Dusername=${{ secrets.NEXUS_USERNAME }}" \
-            "-Dpassword=${{ secrets.NEXUS_PASSWORD }}"
-
+            "-Durl=${{ secrets.NEXUS_URL }}/repository/petclinic-snapshots/"
       - name: Build Docker image
         run: |
           docker build \
